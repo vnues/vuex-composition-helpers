@@ -9,7 +9,8 @@ describe('"useState" - global store state helpers', () => {
 		it('should render component using a state value', () => {
 			const store = createStore({
 				state: {
-					val: 'test-demo' + Math.random()
+					val: 'test-demo' + Math.random(),
+					age:1000
 				}
 			});
 
@@ -17,7 +18,10 @@ describe('"useState" - global store state helpers', () => {
 					props: {},
 					template: '<div>{{stateVal}}</div>',
 					setup() {
-						const {val} = useState(store, ['val']);
+						// 如果传入store,ts可以自动推出store类型
+						// const {val} = useState<{val:string}>(['val']);
+						// "val"[]
+						const {val} = useState(store,['val']);
 						return {
 							stateVal: val
 						}

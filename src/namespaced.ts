@@ -5,7 +5,10 @@ import {Store} from 'vuex';
 export type Nullish = null | undefined;
 
 function computedState(store: any, namespace: string, prop: string) {
+	// 解决在命名空间深度嵌套
 	let module = namespace.split('/').reduce((module, key) => module[key], store.state)
+	console.log('namespace--->',namespace)
+	console.log('module--->',module)
 	return computed(() => module[prop])
 }
 

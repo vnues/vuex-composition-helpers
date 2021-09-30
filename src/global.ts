@@ -6,6 +6,11 @@ function computedState(store: any, prop: string) {
 	return computed(() => store.state[prop]);
 }
 
+// useState<{val: string;}>(storeOrMap: Store<{val: string;}> | "val"[], map?: "val"[]): RefTypes<{ val: string;}>
+// "val" 不是常量吗
+
+// ("age" | "val")[])  表示数组里面的值要么是val 要么是age
+// KnownKeys  获取key类型
 export function useState<TState = any>(storeOrMap: Store<TState> | KnownKeys<TState>[], map?: KnownKeys<TState>[]): RefTypes<TState> {
 	let store = storeOrMap;
 
@@ -13,7 +18,7 @@ export function useState<TState = any>(storeOrMap: Store<TState> | KnownKeys<TSt
 		map = store as KnownKeys<TState>[];
 		store = getStoreFromInstance();
 	}
-	return useMapping(store, null, map, computedState);
+	return useMapping(store, null, map, computedState); 
 }
 
 export function useGetters<TGetters = any>(storeOrMap: Store<any> | KnownKeys<TGetters>[], map?: KnownKeys<TGetters>[]): ExtractGetterTypes<TGetters> {
@@ -25,6 +30,8 @@ export function useGetters<TGetters = any>(storeOrMap: Store<any> | KnownKeys<TG
 	return useMapping(store, null, map, computedGetter);
 }
 
+// useMutations(store, ['change'])
+// 
 export function useMutations<TMutations = any>(storeOrMap: Store<any> | KnownKeys<TMutations>[], map?: KnownKeys<TMutations>[]): ExtractTypes<TMutations, Function> {
 	let store = storeOrMap;
 
@@ -44,3 +51,5 @@ export function useActions<TActions = any>(storeOrMap: Store<any> | KnownKeys<TA
 	}
 	return useMapping(store, null, map, getAction);
 }
+
+// 我们怎么知道state类型，得让用户传给我们
