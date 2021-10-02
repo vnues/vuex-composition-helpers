@@ -178,6 +178,7 @@ describe('"useNamespacedMutations" - namespaced store mutations helpers', () => 
 						<div @click="onClicked">click</div>`,
 					setup() {
 						const {doTest} = useNamespacedMutations<Mutations>('foo', ['doTest']);
+						// const {doTest} = useNamespacedMutations('foo', ['doTest']);
 						const onClicked = () => doTest(clickValue);
 						return {
 							onClicked,

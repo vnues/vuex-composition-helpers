@@ -1,6 +1,6 @@
 import {Store} from 'vuex/types';
 import {computed} from 'vue';
-import {computedGetter, getAction, getMutation, getStoreFromInstance, useMapping, ExtractGetterTypes, ExtractTypes, KnownKeys, RefTypes} from './util';
+import {computedGetter, getAction, getMutation, getStoreFromInstance, useMapping, ExtractGetterTypes, ExtractTypes, KnownKeys, RefTypes, TMap} from './util';
 
 function computedState(store: any, prop: string) {
 	return computed(() => store.state[prop]);
@@ -11,20 +11,20 @@ function computedState(store: any, prop: string) {
 
 // ("age" | "val")[])  表示数组里面的值要么是val 要么是age
 // KnownKeys  获取key类型
-export function useState<TState = any>(storeOrMap: Store<TState> | KnownKeys<TState>[], map?: KnownKeys<TState>[]): RefTypes<TState> {
+export function useState<TState extends Object = any>(storeOrMap: Store<TState> | TMap<KnownKeys<TState>>[], map?: TMap<KnownKeys<TState>>[]): RefTypes<TState> {
 	let store = storeOrMap;
 
 	if (arguments.length === 1) {
-		map = store as KnownKeys<TState>[];
+		map = store as TMap<KnownKeys<TState>>[];
 		store = getStoreFromInstance();
 	}
 	return useMapping(store, null, map, computedState); 
 }
 
-export function useGetters<TGetters = any>(storeOrMap: Store<any> | KnownKeys<TGetters>[], map?: KnownKeys<TGetters>[]): ExtractGetterTypes<TGetters> {
+export function useGetters<TGetters extends Object = any>(storeOrMap: Store<any> | TMap<KnownKeys<TGetters>>[], map?: TMap<KnownKeys<TGetters>>[]): ExtractGetterTypes<TGetters> {
 	let store = storeOrMap;
 	if (arguments.length === 1) {
-		map = store as KnownKeys<TGetters>[];
+		map = store as TMap<KnownKeys<TGetters>>[];
 		store = getStoreFromInstance();
 	}
 	return useMapping(store, null, map, computedGetter);
@@ -32,21 +32,21 @@ export function useGetters<TGetters = any>(storeOrMap: Store<any> | KnownKeys<TG
 
 // useMutations(store, ['change'])
 // 
-export function useMutations<TMutations = any>(storeOrMap: Store<any> | KnownKeys<TMutations>[], map?: KnownKeys<TMutations>[]): ExtractTypes<TMutations, Function> {
+export function useMutations<TMutations extends Object = any>(storeOrMap: Store<any> | TMap<KnownKeys<TMutations>>[], map?: KnownKeys<TMutations>[]): ExtractTypes<TMutations, Function> {
 	let store = storeOrMap;
 
 	if (arguments.length === 1) {
-		map = store as KnownKeys<TMutations>[];
+		map = store as TMap<KnownKeys<TMutations>>[];
 		store = getStoreFromInstance();
 	}
 	return useMapping(store, null, map, getMutation);
 }
 
-export function useActions<TActions = any>(storeOrMap: Store<any> | KnownKeys<TActions>[], map?: KnownKeys<TActions>[]): ExtractTypes<TActions, Function> {
+export function useActions<TActions extends Object = any>(storeOrMap: Store<any> | TMap<KnownKeys<TActions>>[], map?: KnownKeys<TActions>[]): ExtractTypes<TActions, Function> {
 	let store = storeOrMap;
 
 	if (arguments.length === 1) {
-		map = store as KnownKeys<TActions>[];
+		map = store as TMap<KnownKeys<TActions>>[];
 		store = getStoreFromInstance();
 	}
 	return useMapping(store, null, map, getAction);

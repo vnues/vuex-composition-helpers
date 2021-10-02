@@ -140,7 +140,7 @@ describe('"useState" - global store state helpers', () => {
 					props: {},
 					template: '<div>{{stateVal}}</div>',
 					setup() {
-						const {val} = useState(['val']);
+						const {val} = useState(store,['val']);
 						return {
 							stateVal: val
 						}

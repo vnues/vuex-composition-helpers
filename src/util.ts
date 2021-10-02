@@ -27,26 +27,66 @@ export declare type ExtractGetterTypes<O> = {
 	readonly [K in keyof O]: Ref<InferGetterType<O[K]>>;
 };
 
-// 这个types utils将 type: {a:number,b:string} ---> type: "a" | "b"
-export declare type KnownKeys<T> = {
-	[K in keyof T]: string extends K
-		? (T extends any ? any : never)
-		: number extends K
-			? never
-			: K
-} extends {
-		[_ in keyof T]: infer U
-	}
-	? U
-	: never;
+/**
+ * A [[List]]
+ * @param A its type
+ * @returns [[List]]
+ * @example
+ * ```ts
+ * type list0 = [1, 2, 3]
+ * type list1 = number[]
+ * ```
+ */
+export declare type List<A = any> = ReadonlyArray<A>;
 
-// 试试调用这个type util
+
+/**
+ * Get the keys of `A`
+ * @param A
+ * @returns [[Key]]
+ * @example
+ * ```ts
+ * ```
+ */
+export declare type Keys<A extends any> = A extends List ? Exclude<keyof A, keyof any[]> | number : keyof A;
+
+// 这个types utils将 type: {a:number,b:string} ---> type: "a" | "b"
+/**
+ * Get the known keys of an [[Object]]
+ * @param O
+ * @returns [[Key]]
+ * @example
+ * ```ts
+ * ```
+ */
+// export declare type KnownKeys<O> = {
+//     [K in keyof O]: string extends K ? never : number extends K ? never : K;
+// } extends {
+//     [K in keyof O]: infer U;
+// } ? U & Keys<O> : never;
+
+type RemoveIndex<T> = {
+  [ K in keyof T as string extends K ? never : number extends K ? never : K ] : T[K]
+};
+
+export declare type KnownKeys<T> = {
+  // 移除索引类型
+  [K in keyof RemoveIndex<T>]: string extends K ? never : number extends K ? never : K
+} extends { [_ in keyof T]: infer U } ? U&Keys<T> : never;
+
+
+export declare type TMap<T> = T extends symbol| never  ? any : T
+
+// type A = KnownKeys<{age:number}>
+// type B = TMap<A>
+
 // type A = ("a" | "b")[]
 // type A =  KnownKeys<{a:number,b:string}>[]
 
 export declare type RefTypes<T> = {
 	readonly [Key in keyof T]: Ref<T[Key]>
 }
+
 
 
 // 调用callback
@@ -68,7 +108,7 @@ function useFromArray(store: any, namespace: string | null, props: Array<string>
 }
 
 function useFromObject<T>(store: any, namespace: string | null, props: KnownKeys<T>[], cb: Function) {
-	const obj: any = {};
+	const obj= Object.create(null);
 	// 优化写法
 	for (let key in props) {
 		if (props.hasOwnProperty(key)) {
@@ -95,7 +135,7 @@ export function getAction(store: any, action: string): Function {
 }
 
 // 这个泛型参数T没看出啥用处
-export function useMapping<T>(store: any, namespace: string | null, map: KnownKeys<T>[] | Array<string> | undefined, cb: Function) {
+export function useMapping<T>(store: any, namespace: string | null, map: TMap<KnownKeys<T>>[] | Array<string> | undefined, cb: Function) {
 	if (!map) {
 		return {};
 	}

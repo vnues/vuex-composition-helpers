@@ -85,7 +85,10 @@ describe('"useActions" - global store actions helpers', () => {
 			const clickValue = 'demo-click-' + Math.random();
 			const dispatcher = jest.fn();
 
-			interface Actions extends ActionTree<any, any> {
+			interface AA {
+				age:number
+			}
+			interface Actions extends AA {
 				doTest: (ctx: any, payload: string) => void
 			}
 
