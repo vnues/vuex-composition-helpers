@@ -69,6 +69,9 @@ type RemoveIndex<T> = {
   [ K in keyof T as string extends K ? never : number extends K ? never : K ] : T[K]
 };
 
+/**
+ * 修复map类型 如果有传类型 不应该报any 应该报xxx[]
+ */
 export declare type KnownKeys<T> = {
   // 移除索引类型
   [K in keyof RemoveIndex<T>]: string extends K ? never : number extends K ? never : K

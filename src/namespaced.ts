@@ -26,7 +26,7 @@ export function useNamespacedState<TState extends Object = any>(storeOrNamespace
 	return useMapping(store, namespace, map, computedState);
 }
 
-export function useNamespacedMutations<TMutations extends Object = {}>(storeOrNamespace: Store<any> | string | Nullish, namespaceOrMap: string | TMap<KnownKeys<TMutations>>[], map?:TMap<KnownKeys<TMutations>>[]): ExtractTypes<TMutations, Function> {
+export function useNamespacedMutations<TMutations extends Object = any>(storeOrNamespace: Store<any> | string | Nullish, namespaceOrMap: string | TMap<KnownKeys<TMutations>>[], map?:TMap<KnownKeys<TMutations>>[]): ExtractTypes<TMutations, Function> {
 	let store: Store<any>, namespace: string;
 
 	if (arguments.length === 2) {
@@ -40,7 +40,7 @@ export function useNamespacedMutations<TMutations extends Object = {}>(storeOrNa
 	return useMapping(store, namespace, map, getMutation);
 }
 
-export function useNamespacedActions<TActions extends Object = {}>(storeOrNamespace: Store<any> | string | Nullish, namespaceOrMap: string | TMap<KnownKeys<TActions>>[], map?: TMap<KnownKeys<TActions>>[]): ExtractTypes<TActions, Function> {
+export function useNamespacedActions<TActions extends Object = any>(storeOrNamespace: Store<any> | string | Nullish, namespaceOrMap: string | TMap<KnownKeys<TActions>>[], map?: TMap<KnownKeys<TActions>>[]): ExtractTypes<TActions, Function> {
 	let store: Store<any>, namespace: string;
 
 	if (arguments.length === 2) {
@@ -54,7 +54,7 @@ export function useNamespacedActions<TActions extends Object = {}>(storeOrNamesp
 	return useMapping(store, namespace, map, getAction);
 }
 
-export function useNamespacedGetters<TGetters extends Object = {}>(storeOrNamespace: Store<any> | string | Nullish, namespaceOrMap: string |  TMap<KnownKeys<TGetters>>[], map?: TMap<KnownKeys<TGetters>>[]): ExtractGetterTypes<TGetters> {
+export function useNamespacedGetters<TGetters extends Object = any>(storeOrNamespace: Store<any> | string | Nullish, namespaceOrMap: string |  TMap<KnownKeys<TGetters>>[], map?: TMap<KnownKeys<TGetters>>[]): ExtractGetterTypes<TGetters> {
 	let store: Store<any>, namespace: string;
 
 	if (arguments.length === 2) {
